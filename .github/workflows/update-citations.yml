@@ -23,7 +23,7 @@ jobs:
         id: fetch
         run: |
           API_KEY=${{ secrets.SERPAPI_KEY }}
-          AUTHOR_ID="upbsFBAAAAAJ"  # 替换为你的 Google Scholar ID
+          AUTHOR_ID="upbsFBAAAAAJ"  # 替换为你自己的 Google Scholar ID
 
           echo "📡 Requesting citation info from SerpAPI..."
           RESPONSE=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY")
@@ -31,8 +31,8 @@ jobs:
           echo "🧾 Raw response from SerpAPI:"
           echo "$RESPONSE"
 
-          # 多路径尝试解析
-          COUNT=$(echo "$RESPONSE" | jq -r '.cited_by.total // .cited_by.table.citations.all // .cited_by.table[0].citations.all // 0')
+          # 正确提取 citations 数值
+          COUNT=$(echo "$RESPONSE" | jq -r '.cited_by.table[0].citations.all // 0')
 
           echo "📚 Parsed citation count: $COUNT"
           echo "count=$COUNT" >> $GITHUB_OUTPUT
@@ -51,7 +51,8 @@ jobs:
           echo "📄 Before:"
           cat index.html
 
-          sed -i "s/Citations: [0-9][0-9]*/Citations: ${COUNT}/g" index.html
+          # 替换 Citations: xxx（包含 <strong> 标签也能匹配）
+          sed -i "s/Citations: *[0-9]\+/Citations: ${COUNT}/g" index.html
 
           echo "📄 After:"
           cat index.html
@@ -71,4 +72,3 @@ jobs:
             echo "📦 Committing and pushing citation update..."
             git commit -m "Update citation count"
             git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:$(git rev-parse --abbrev-ref HEAD)
-          fi

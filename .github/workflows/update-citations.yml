@@ -31,7 +31,7 @@ jobs:
           echo "🧾 Raw response from SerpAPI:"
           echo "$RESPONSE"
 
-          # 正确提取 citations 数值
+          # 正确提取 citations 数值（注意 table 是 array）
           COUNT=$(echo "$RESPONSE" | jq -r '.cited_by.table[0].citations.all // 0')
 
           echo "📚 Parsed citation count: $COUNT"
@@ -51,7 +51,6 @@ jobs:
           echo "📄 Before:"
           cat index.html
 
-          # 替换 Citations: xxx（包含 <strong> 标签也能匹配）
           sed -i "s/Citations: *[0-9]\+/Citations: ${COUNT}/g" index.html
 
           echo "📄 After:"

@@ -2,48 +2,57 @@ name: Update Google Scholar Citations
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    - cron: '0 0 * * *'  # 每天 UTC 时间 00:00 自动运行
+  workflow_dispatch:       # 手动触发
 
 jobs:
   update-citations:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Fetch citation count
+      - name: Fetch citation count from SerpAPI
         id: fetch
         run: |
           API_KEY=${{ secrets.SERPAPI_KEY }}
-          AUTHOR_ID="upbsFBAAAAAJ"
+          AUTHOR_ID="upbsFBAAAAAJ"  # ← 改成你自己的 Google Scholar ID
 
-          echo "Fetching citation count..."
+          echo "📡 Fetching citation count from SerpAPI..."
           COUNT=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY" | jq ".cited_by.table.citations.all")
-          echo "Citation count: $COUNT"
+
+          echo "📚 Citation count retrieved: $COUNT"
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
       - name: Replace citation in HTML
         run: |
           COUNT=${{ steps.fetch.outputs.count }}
-          echo "Replacing citation with $COUNT"
-          cat index.html
 
-          # 替换 HTML 中的 Citations: xxx（带 <strong> 标签也能匹配）
+          echo "🔁 Replacing citation count with: $COUNT"
+          echo "📄 File before replacement:"
+          cat index.html || echo "⚠️ index.html not found!"
+
+          # 替换 Citations: xxx 不管是否有 <strong> 标签
           sed -i "s/Citations: [0-9][0-9]*/Citations: ${COUNT}/g" index.html
 
-          echo "After replacement:"
+          echo "📄 File after replacement:"
           cat index.html
 
-      - name: Commit and push
+      - name: Commit and push if changed
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
           git add index.html
-          git diff --cached --quiet || git commit -m "Update citation count" || echo "Nothing to commit"
-          git push || echo "Nothing to push"
+
+          if git diff --cached --quiet; then
+            echo "✅ No changes to commit (citation unchanged)"
+          else
+            echo "📦 Committing and pushing updated citation count..."
+            git commit -m "Update citation count"
+            git push || echo "⚠️ Push failed (possibly due to permission or fast-forward issues)"
+          fi

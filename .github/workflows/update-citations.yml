@@ -23,7 +23,7 @@ jobs:
         id: fetch
         run: |
           API_KEY=${{ secrets.SERPAPI_KEY }}
-          AUTHOR_ID="upbsFBAAAAAJ"  # 替换为你自己的 Google Scholar ID
+          AUTHOR_ID="upbsFBAAAAAJ"
 
           echo "📡 Requesting citation info from SerpAPI..."
           RESPONSE=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY")
@@ -31,7 +31,6 @@ jobs:
           echo "🧾 Raw response from SerpAPI:"
           echo "$RESPONSE"
 
-          # 正确提取 citations 数值（注意 table 是 array）
           COUNT=$(echo "$RESPONSE" | jq -r '.cited_by.table[0].citations.all // 0')
 
           echo "📚 Parsed citation count: $COUNT"

@@ -70,3 +70,4 @@ jobs:
             echo "📦 Committing and pushing citation update..."
             git commit -m "Update citation count"
             git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:$(git rev-parse --abbrev-ref HEAD)
+          fi

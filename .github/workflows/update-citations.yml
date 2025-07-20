@@ -2,11 +2,11 @@ name: Update Google Scholar Citations
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+    - cron: '0 0 * * *'  # 每天 UTC 时间 0 点运行
+  workflow_dispatch:       # 支持手动触发
 
 permissions:
-  contents: write  # ✅ 允许 push 权限
+  contents: write  # 允许 workflow 写入 repo 内容
 
 jobs:
   update-citations:
@@ -23,21 +23,31 @@ jobs:
         id: fetch
         run: |
           API_KEY=${{ secrets.SERPAPI_KEY }}
-          AUTHOR_ID="upbsFBAAAAAJ"
+          AUTHOR_ID="upbsFBAAAAAJ"  # ← 替换成你自己的 Google Scholar ID
 
-          echo "Fetching citation count..."
-          COUNT=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY" | jq ".cited_by.table.citations.all")
-          echo "Citation count: $COUNT"
+          echo "📡 Fetching citation count from SerpAPI..."
+          RESPONSE=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY")
+
+          echo "📥 Raw SerpAPI response:"
+          echo "$RESPONSE"
+
+          COUNT=$(echo "$RESPONSE" | jq -r '.cited_by.total // 0')
+
+          echo "📚 Extracted citation count: $COUNT"
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
       - name: Replace citation in HTML
         run: |
           COUNT=${{ steps.fetch.outputs.count }}
-          echo "Replacing citation count with: $COUNT"
 
+          echo "🔁 Replacing citation count with: $COUNT"
+          echo "📄 File before replacement:"
+          cat index.html || echo "⚠️ index.html not found!"
+
+          # 替换 Citations: xxx，无论是否在 <strong> 中都能匹配
           sed -i "s/Citations: [0-9][0-9]*/Citations: ${COUNT}/g" index.html
 
-          echo "After replacement:"
+          echo "📄 File after replacement:"
           cat index.html
 
       - name: Commit and push if changed
@@ -50,8 +60,8 @@ jobs:
           git add index.html
 
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "✅ No changes to commit (citation unchanged)"
           else
             git commit -m "Update citation count"
-            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:master
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:$(git rev-parse --abbrev-ref HEAD)
           fi

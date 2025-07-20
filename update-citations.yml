@@ -1,0 +1,40 @@
+# 📁 .github/workflows/update-citations.yml
+
+name: Update Google Scholar Citations
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 0 点运行
+  workflow_dispatch:
+
+jobs:
+  update-citations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Fetch citation count from SerpAPI
+        run: |
+          API_KEY=${{ secrets.SERPAPI_KEY }}
+          AUTHOR_ID="upbsFBAAAAAJ"  # 改成你的 Google Scholar ID
+
+          echo "Fetching citation count..."
+          COUNT=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY" \
+            | jq ".cited_by.table.citations.all")
+
+          echo "Citation count: $COUNT"
+
+          # 修改 index.html 中的 Citations 数字（务必原文为 Citations: 数字）
+          sed -i "s/Citations: [0-9]\+/Citations: $COUNT/" index.html
+
+      - name: Commit and push updated HTML
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add index.html
+          git commit -m "Update citation count"
+          git push

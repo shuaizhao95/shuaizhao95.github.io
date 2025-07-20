@@ -1,43 +1,49 @@
-# 📁 .github/workflows/update-citations.yml
-
 name: Update Google Scholar Citations
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 0 点运行
+    - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
   update-citations:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Install jq
-        run: sudo apt-get install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Fetch citation count from SerpAPI
+      - name: Fetch citation count
+        id: fetch
         run: |
           API_KEY=${{ secrets.SERPAPI_KEY }}
-          AUTHOR_ID="upbsFBAAAAAJ"  # 改成你的 Google Scholar ID
+          AUTHOR_ID="upbsFBAAAAAJ"
 
           echo "Fetching citation count..."
-          COUNT=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY" \
-            | jq ".cited_by.table.citations.all")
-
+          COUNT=$(curl -s "https://serpapi.com/search.json?engine=google_scholar_author&author_id=$AUTHOR_ID&api_key=$API_KEY" | jq ".cited_by.table.citations.all")
           echo "Citation count: $COUNT"
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
 
-          # 修改 index.html 中的 Citations 数字（务必原文为 Citations: 数字）
-          sed -i "s/Citations: [0-9][0-9]*/Citations: ${COUNT}/g" index.html
-
+      - name: Replace citation in HTML
+        run: |
+          COUNT=${{ steps.fetch.outputs.count }}
+          echo "Replacing citation with $COUNT"
           cat index.html
 
+          # 替换 HTML 中的 Citations: xxx（带 <strong> 标签也能匹配）
+          sed -i "s/Citations: [0-9][0-9]*/Citations: ${COUNT}/g" index.html
 
-      - name: Commit and push updated HTML
+          echo "After replacement:"
+          cat index.html
+
+      - name: Commit and push
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
           git add index.html
-          git commit -m "Update citation count"
-          git push
+          git diff --cached --quiet || git commit -m "Update citation count" || echo "Nothing to commit"
+          git push || echo "Nothing to push"

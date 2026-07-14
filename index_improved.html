@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shuai Zhao's home page">
+    <link rel="stylesheet" href="jemdoc.css" type="text/css">
+    <link rel="shortcut icon" href="ntu.png">
+    <title>Shuai Zhao's Homepage @ Nanyang Technological University</title>
+
+    <style>
+        :root {
+            --page-bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --text: #263238;
+            --muted: #64748b;
+            --line: #e2e8f0;
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --primary-soft: #eef5ff;
+            --shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--page-bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.65;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .page-shell {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 28px 0 48px;
+        }
+
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+            padding: 10px 12px;
+            border: 1px solid rgba(226, 232, 240, 0.95);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .top-nav a {
+            padding: 7px 11px;
+            border-radius: 8px;
+            color: #334155;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .top-nav a:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 32px;
+            padding: 34px 38px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at top right, rgba(26, 115, 232, 0.10), transparent 34%),
+                var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            font-size: clamp(34px, 5vw, 52px);
+            line-height: 1.08;
+            letter-spacing: -1.2px;
+            color: #172033;
+        }
+
+        .affiliation {
+            margin: 0;
+            color: #475569;
+            font-size: 16px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .action-link,
+        .citation-pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 40px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .action-link {
+            border: 1px solid #cfe0fb;
+            background: #fff;
+            color: var(--primary);
+        }
+
+        .action-link:hover {
+            border-color: #9fc2f5;
+            background: var(--primary-soft);
+            text-decoration: none;
+        }
+
+        .citation-pill {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .institution-logos {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .institution-logos img {
+            object-fit: contain;
+        }
+
+        .profile-photo {
+            width: 168px;
+            max-width: 28vw;
+            border: 5px solid #fff;
+            border-radius: 18px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+        }
+
+        .section-card {
+            margin-top: 22px;
+            padding: 28px 32px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            color: #172033;
+            font-size: 25px;
+            line-height: 1.25;
+        }
+
+        .section-kicker {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .biography p {
+            margin: 12px 0;
+        }
+
+        .news-scroll {
+            max-height: 380px;
+            overflow-y: auto;
+            padding: 4px 14px 4px 4px;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+
+        .news-scroll ul {
+            margin: 0;
+            padding-left: 24px;
+        }
+
+        .news-scroll li {
+            margin: 0;
+            padding: 8px 4px;
+            border-bottom: 1px dashed #e7edf5;
+        }
+
+        .news-scroll li:last-child {
+            border-bottom: 0;
+        }
+
+        .publication-header {
+            align-items: center;
+        }
+
+        .full-publications-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            flex: 0 0 auto;
+            padding: 9px 14px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 750;
+            white-space: nowrap;
+        }
+
+        .full-publications-button:hover {
+            background: var(--primary-dark);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .year-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 0 0 22px;
+        }
+
+        .year-nav a {
+            padding: 6px 11px;
+            border: 1px solid #d9e5f7;
+            border-radius: 999px;
+            background: #f8fbff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .year-nav a:hover {
+            background: var(--primary-soft);
+            text-decoration: none;
+        }
+
+        .publications h3 {
+            margin: 27px 0 10px;
+            padding-left: 11px;
+            border-left: 4px solid var(--primary);
+            color: #25324a;
+            font-size: 21px;
+        }
+
+        .publications ol {
+            margin: 0;
+            padding-left: 30px;
+        }
+
+        .publications ol > li {
+            margin: 0;
+            padding: 11px 5px 13px 4px;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .publications ol > li:last-child {
+            border-bottom: 0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .project-card {
+            padding: 20px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #fbfdff;
+        }
+
+        .project-card h3 {
+            margin: 0 0 10px;
+            color: #23314d;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .project-card p {
+            margin: 0 0 10px;
+            color: #526174;
+        }
+
+        .project-card ol {
+            margin: 0;
+            padding-left: 21px;
+        }
+
+        .project-card li {
+            margin: 6px 0;
+        }
+
+        .clean-list {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        .clean-list > li {
+            margin: 9px 0;
+            padding-left: 3px;
+        }
+
+        .service-list > li {
+            margin: 0;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .service-list > li:last-child {
+            border-bottom: 0;
+        }
+
+        .page-footer {
+            margin-top: 26px;
+            padding: 24px 28px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            text-align: center;
+            color: var(--muted);
+            box-shadow: var(--shadow);
+        }
+
+        .clustrmaps-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 8px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 28px;
+            }
+
+            .profile-photo {
+                grid-row: 1;
+                width: 145px;
+                max-width: none;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .page-shell {
+                width: min(100% - 20px, 1120px);
+                padding-top: 12px;
+            }
+
+            .top-nav {
+                position: static;
+            }
+
+            .hero,
+            .section-card {
+                padding: 22px 20px;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .full-publications-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .action-link,
+            .citation-pill {
+                justify-content: center;
+            }
+
+            .institution-logos {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main id="top" class="page-shell">
+        <nav class="top-nav" aria-label="Page navigation">
+            <a href="#biography">Biography</a>
+            <a href="#news">News</a>
+            <a href="#publications">Publications</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#awards">Awards</a>
+            <a href="#service">Service</a>
+        </nav>
+
+        <header class="hero">
+            <div>
+                <h1>Shuai Zhao</h1>
+                <p class="affiliation">
+                    College of Computing and Data Science<br>
+                    Nanyang Technological University, Singapore, 639798.<br>
+                    Email: shuai.zhao &alpha;t ntu d&omicron;t edu d&omicron;t sg
+                </p>
+
+                <div class="hero-actions">
+                    <a class="action-link"
+                       href="https://scholar.google.com.hk/citations?hl=en&user=upbsFBAAAAAJ&view_op=list_works"
+                       target="_blank" rel="noopener noreferrer">
+                        📚 Google Scholar
+                    </a>
+                    <a class="action-link" href="full_publications.html">
+                        📄 Full Publications
+                    </a>
+                    <span class="citation-pill">Citations: 1262</span>
+                </div>
+
+                <div class="institution-logos">
+                    <img src="640.gif" width="64" height="64" alt="">
+                    <img src="ntu_logo.png" width="178" height="64" alt="Nanyang Technological University">
+                </div>
+            </div>
+
+            <img class="profile-photo" src="zs.jpeg" alt="Shuai Zhao">
+        </header>
+
+        <section id="biography" class="section-card biography">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">About</span>
+                    <h2>Biography</h2>
+                </div>
+            </div>
+            <p>
+    Hi! I am currently a Postdoctoral Researcher at Nanyang Technological University in Singapore, advised by Prof. <a href='https://tuanluu.github.io/' >Anh Tuan Luu</a>. I received my PhD from Jinan University (2021–2024) under the supervision of Prof. <a href='https://faculty.jnu.edu.cn/xxkxjsxy/wjm2/list.htm'>Jinming Wen</a>. I spent one year at Jinan University and was jointly trained at Nanyang Technological University for the remaining period, under the supervision of Prof. Anh Tuan Luu.
+</p>
+<p>
+    🤔My research interests include Model Security, Agent, Backdoor Attack, Large Language Models. I keep collobration with my friends Dr. <a href='https://curisejia.github.io/' >Yanhao Jia </a> on Multi-Modal Tasks, Dr. <a href='https://riesummer.github.io/' >Xinyi Wu </a> on AI4Education, and Dr. <a href='https://fenffef.github.io/' >Xuan Feng </a> on Trustworthy AI.
+</p>
+<p>
+    🤝Note: I am always interested in working with self-motivated students. If you have a strong interest in large language model and model security, please feel free to contact me.
+</p>
+        </section>
+
+        <section id="news" class="section-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Updates</span>
+                    <h2>News</h2>
+                </div>
+            </div>
+            <div class="news-scroll">
+<ul>
+    <li>
+        [2026.07] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Information Forensics and Security.
+    </li>
+    <li>
+        [2026.06] &nbsp;🎉🎉 One paper accepted at TPAMI, Congrats to <a href='https://scholar.google.com/citations?user=7P0RI0cAAAAJ&hl=en' >Leilei Gan </a>.
+    </li>
+    <li>
+        [2026.05] &nbsp;🎉🎉 One paper accepted at ICML2026, Congrats to <a href='https://fenffef.github.io/' >Xuan Feng </a>.
+    </li>
+    <li>
+        [2026.04] &nbsp;🎉🎉 Five papers accepted at ACL2026.
+    </li>
+    <li>
+        [2026.02] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Dependable and Secure Computing.
+    </li>
+    <li>
+        [2026.01] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Affective Computing.
+    </li>
+    <li>
+        [2025.12] &nbsp;🎉🎉 One paper accepted at BMJ Open Ophthalmology.
+    </li>
+    <li>
+        [2025.12] &nbsp;🎉🎉 One paper accepted at Pattern Recognition.
+    </li>
+    <li>
+        [2025.11] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Information Forensics and Security.
+    </li>
+    <li>
+        [2025.11] &nbsp;🎉🎉 Two papers accepted at AAAI2026.
+    </li>
+    <li>
+        [2025.11] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Affective Computing.
+    </li>
+    <li>
+        [2025.10] &nbsp;🎉🎉 Invited to serve as Area Chair for ARR; serve as Academic Editor for  <a href='https://ietresearch.onlinelibrary.wiley.com/journal/ietbm' >IET Biometrics Journal</a>.
+    </li>
+    <li>
+        [2025.07] &nbsp;🎉🎉 One paper accepted at Pattern Recognition.
+    </li>
+    <li>
+        [2025.05] &nbsp;🎉🎉 One paper accepted at Information Fusion.
+    </li>
+    <li>
+        [2025.05] &nbsp;🎉🎉 Three papers accepted at ACL2025.
+    </li>
+    <li>
+        [2025.04] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Affective Computing.
+    </li>
+    <li>
+        [2025.04] &nbsp;🎉🎉 One paper accepted at IJCNN2025.
+    </li>
+    <li>
+        [2025.02] &nbsp;🎉🎉 One paper accepted at CVPR2025 (Highlight).
+    </li>
+    <li>
+        [2025.01] &nbsp;🎉🎉 One paper accepted at NAACL2025.
+    </li>
+    <li>
+        [2025.01] &nbsp;🎉🎉 One paper accepted at Transactions on Machine Learning Research (Survey Certification).
+    </li>
+    <li>
+        [2024.11] &nbsp;🎉🎉 One paper accepted at Expert Systems With Applications.
+    </li>
+    <li>
+        [2024.09] &nbsp;🎉🎉 One paper accepted at EMNLP2024.
+    </li>
+    <li>
+        [2024.05] &nbsp;🎉🎉 One paper accepted at IEEE-ACM Transactions on Audio, Speech and Language Processing.
+    </li>
+    <li>
+        [2024.04] &nbsp;🎉🎉 One paper accepted at IEEE Transactions on Emerging Topics in Computational Intelligence.
+    </li>
+    <li>
+        [2024.03] &nbsp;🎉🎉 One paper accepted at NAACL2024.
+    </li>
+    <li>
+        [2023.10] &nbsp;🎉🎉 One paper accepted at EMNLP2023.
+    </li>
+    <li>
+        [2023.05] &nbsp;🎉🎉 One paper accepted at ACM Transactions on Asian and Low-Resource Language Information Processing.
+    </li>
+ </ul>
+</div>
+        </section>
+
+        <section id="publications" class="section-card publications">
+            <div class="section-heading publication-header">
+                <div>
+                    <span class="section-kicker">Research Output</span>
+                    <h2 id="PublicationsTitle">Selected Publications</h2>
+                    <div style="margin-top:4px; color:var(--muted); font-size:14px;">
+                        First-author and corresponding-author publications
+                    </div>
+                </div>
+                <a class="full-publications-button" href="full_publications.html">
+                    Full Publications <span aria-hidden="true">→</span>
+                </a>
+            </div>
+
+            <div class="year-nav" aria-label="Publication years">
+                <a href="#2026Title">2026</a>
+                <a href="#2025Title">2025</a>
+                <a href="#2024Title">2024</a>
+                <a href="#2023Title">2023</a>
+                <a href="#year-2022-before">2022 and before</a>
+            </div>
+
+            <h3 id="2026Title">2026 <small></small></h3>
+<ol id="2026">
+    <li> 
+    <b>Shuai Zhao</b>, Zhongliang Guo, Xinyi Wu, Xiaobao Wu, Yanhao Jia, Luwei Xiao, Anh Tuan Luu. <a>Protecting Your Customized LLM Systems from Backdoored Instructions with Metacognitive Probing</a> <b>IEEE Transactions on Information Forensics and Security</b> 2026.
+    </li>  
+    <li> 
+    <b>Shuai Zhao</b>, Xinyi Wu, Shiqian Zhao, Xiaobao Wu, Zhongliang Guo, Yanhao Jia, Anh Tuan Luu. <a>P2P: A Poison-to-Poison Remedy for Reliable Backdoor Defense in LLMs</a> <b>ACL</b> 2026.
+    </li>  
+    
+    <li> 
+    Man Hu, Xinyi Wu, Zhufeng Suo, Jinbo Feng, Linghui Meng, Yanhao Jia, Anh Tuan Luu, <b>Shuai Zhao✉</b>. <a>Rethinking Reasoning: A Survey on Reasoning-based Backdoors in LLMs</a> <b>ACL</b> 2026. <b>(Corresponding Author)</b>
+    </li> 
+    
+    <li> 
+    <b>Shuai Zhao</b>, Qika Lin, Yanhao Jia, Xinyi Wu, Yuwen Li, and Luu Anh Tuan. <a>UniFLE: Uniform Fusion of Multiple LoRA Experts for Backdoor Defense in Large Language Models.</a> <b>IEEE Transactions on Dependable and Secure Computing</b> 2026.
+    </li>  
+    <li> 
+    Xinyi Wu, Jia, Yanhao, Qinglin Zhang, Yiran Qin, Luwei Xiao, and <b>Shuai Zhao✉</b>. <a href='https://www.arxiv.org/abs/2505.17050'>Towards Affective Evaluation of STEM Education: Leveraging MLLMs in Project-Based Learning.</a> <b>IEEE Transactions on Affective Computing</b> 2026. <b>(Corresponding Author)</b>
+    </li>  
+
+
+</ol>
+
+
+<h3 id="2025Title">2025 <small></small></h3>
+<ol id="2025">
+    <li> 
+    Yulin Zhang<sup>†</sup>, <b>Shuai Zhao<sup>†</sup></b>, Jianbing Ren, Yuwen Li, Xinyu Zhao, Chuan Nie, Suzhen Xie, Xuelin Huang, Jie Sun, Jinming Wen, Xianqiong Luo, Guoming Zhang. <a>NLP-ROPCare: Predicting retinopathy of prematurity with admission notes using natural language processing</a>[J]. <i><b>BMJ Open Ophthalmology</b></i>, 2025. <b>(Equal contributions)</b>
+    </li>
+    <li> 
+    Yuwen Li, Xinyi Wu, Zhongliang Guo✉, Luwei Xiao, Yanhao Jia, and <b>Shuai Zhao✉</b>. <a>Backdoor Defense for Large Language Models with Weak-to-Strong Knowledge Distillation</a>[J]. <i><b>Pattern Recognition</b></i>, 2025. <b>(Corresponding Authors)</b>
+    </li>
+    <li> 
+    <b>Shuai Zhao</b>, Yulin Zhang, Luwei Xiao, Xinyi Wu, Yanhao Jia, Zhongliang Guo, Xiaobao Wu, Cong-Duy Nguyen, Guoming Zhang, and Anh Tuan Luu. <a href='https://arxiv.org/abs/2507.05816'>Affective-roptester: Capability and bias analysis of llms in predicting retinopathy of prematurity</a>[J]. <i><b>IEEE Transactions on Affective Computing</b></i>, 2025.
+    </li>
+    <li> 
+    Guo, Zhongliang, Chun Tong Lei, Lei Fang, <b>Shuai Zhao✉</b>, Yifei Qian, Jingyu Lin, Zeyu Wang, Cunjian Chen, Ognjen Arandjelović, and Chun Pong Lau✉. <a href='https://arxiv.org/abs/2408.10901'>A grey-box attack against latent diffusion model-based image editing by posterior collapse</a>[J]. <i><b>IEEE Transactions on Information Forensics and Security</b></i>, 2025. <b>(Corresponding Authors)</b>
+    </li>
+    <li> 
+    Man, Hu, Yahui Ding, Yatao Yang✉, Liangyu Chen, Yanhao Jia, and <b>Shuai Zhao✉</b>. <a href='https://arxiv.org/abs/2508.01647'>DUP: Detection-guided Unlearning for Backdoor Purification in Language Models</a>[C].  <i><b>AAAI</b></i>, 2026. <b>(Corresponding Authors)</b>
+    </li>
+    <li> 
+        Yanhao Jia, Xinyi Wu, Hao Li, Qinglin Zhang, Yuxiao Hu, <b>Shuai Zhao✉</b>, Wenqi, Fan. <a href='https://arxiv.org/abs/2502.05863' >Uni-Retrieval: A Multi-Style Retrieval Framework for STEM's Education</a>[C].  <i><b>ACL</b></i>, 2025. <b>(Corresponding Author)</b>
+    </li>
+    <li> 
+        <b>Shuai Zhao</b>, Xiaobao Wu, Cong-Duy Nguyen, Yanhao Jia, Meihuizi Jia, Yichao Feng, Luu Anh Tuan. <a href='https://arxiv.org/abs/2410.14425' >Unlearning Backdoor Attacks for LLMs with Weak-to-Strong Knowledge Distillation</a>[C].  <i><b>ACL</b></i>, 2025.
+    </li>
+    <li> 
+        <b>Shuai Zhao</b>, Meihuizi Jia, Zhongliang Guo, Leilei Gan, Xiaoyu Xu, Xiaobao Wu, Jie Fu, Yichao Feng, Fengjun Pan, Luu Anh Tuan. <a href='https://openreview.net/forum?id=wZLWuFHxt5' >A Survey of Recent Backdoor Attacks and Defenses in Large Language Models</a>[J]. <i><b>Transactions on Machine Learning Research</b></i>, 2025.（<b>Survey Certification</b>）
+    </li>
+</ol>
+
+<h3 id="2024Title">2024 <small></small></h3>
+<ol id="2024">
+    <li> 
+        <b>Shuai Zhao</b>, Xiaoyu Xu, Luwei Xiao, Jinming Wen, Luu Anh Tuan. <a>Clean-label Backdoor Attack and Defense: An Examination of Language Model Vulnerability</a>[J]. <i><b>Expert Systems With Applications</b></i>, 2024.
+    </li>
+    <li> 
+        <b>Shuai Zhao</b>, Meihuizi Jia, Anh Tuan Luu, Fengjun Pan, Jinming Wen. <a href='https://arxiv.org/abs/2401.05949' >Universal Vulnerabilities in Large Language Models: Backdoor Attacks for In-context Learning</a>[C]. <i><b>Proceedings of the Empirical Methods in Natural Language Processing (EMNLP)</b></i>, 2024.
+    </li>
+    <li> 
+        <b>Shuai Zhao</b>, Anh Tuan Luu, Jie Fu, Jinming Wen, Weiqi Luo. <a href='https://ieeexplore.ieee.org/abstract/document/10549768' >Exploring Clean Label Backdoor Attacks and Defense in Language Models</a>[J]. <i><b>IEEE-ACM Transactions on Audio, Speech and Language Processing</b></i>, 2024.
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Jie Tian, Jie Fu, Jie Chen, Jinming Wen. <a href='https://ieeexplore.ieee.org/abstract/document/10523948' >FeaMix: Feature Mix with Memory Batch Based on Self-consistency Learning for Code Generation and Code Translation</a>[J]. <i><b>IEEE Transactions on Emerging Topics in Computational Intelligence</b></i>, 2024.
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Leilei Gan, Anh Tuan Luu, Jie Fu, Lingjuan Lv, Miehuizi Jia, Jinming Wen. <a href='https://arxiv.org/abs/2402.12168' >Defending Against Weight-Poisoning Attacks for Parameter-Efficient Fine-Tuning</a>, <i><b>NAACL</b></i>, 2024
+    </li>
+</ol>
+
+<h3 id="2023Title">2023 <small></small></h3>
+<ol id="2023">
+    <li>
+        <b>Shuai Zhao</b>, Jinming Wen, Anh Tuan Luu, Junbo Zhao, Jie Fu. <a href='https://aclanthology.org/2023.emnlp-main.757/' >Prompt as Triggers for Backdoor Attack: Examining the Vulnerability in Language Models</a>[C]. <i><b>Proceedings of the Empirical Methods in Natural Language Processing (EMNLP)</b></i>, 2023.
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Qing Li, Yuer Yang, Jinming Wen, Weiqi Luo. <a href='https://dl.acm.org/doi/abs/10.1145/3596219' >From Softmax to Nucleusmax: A Novel Sparse Language model for Chinese Radiology Report Summarization</a>[J]. <i><b>ACM Transactions on Asian and Low-Resource Language Information Processing</b></i>, 2023.
+    </li>
+</ol>
+
+<h3 id="year-2022-before">2022 and before <small></small></h3>
+<ol id="publications-2022-before">
+    <li>
+        <b>Shuai Zhao</b>, Zhuoqian Liang, Jinming Wen, Jie Chen. <a>Sparsing and smoothing for the seq2seq models</a>[J]. <i><b>IEEE Transactions on Artificial Intelligence</b></i>, 2022: 1-10.     
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Qing Li, Tengjiao He, Jinming Wen. <a>A Step-by-Step Gradient Penalty with Similarity Calculation for Text Summary Generation</a>[J]. <i><b>Neural Processing Letters</b></i>, 2022: 1-16.    
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Tengjiao He, Jinming Wen. <a>Sparse summary generation</a>[J]. <i><b>Applied Intelligence</b></i>, 2023, 53(2): 2042-2054.    
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Tianyu Zhang, Man Hu, Wen Chang, Fucheng You. <a>AP-BERT: enhanced pre-trained model through average pooling</a>[J]. <i><b>Applied Intelligence</b></i>, 2022, 52: 15929–15937.    
+    </li>
+    <li>
+        <b>Shuai Zhao</b>, Fucheng You, Wen Chang, Tianyu Zhang, Man Hu. <a>Augment BERT with average pooling layer for Chinese summary generation</a>[J]. <i><b>Journal of Intelligent & Fuzzy Systems</b></i>, 2022, 42(3): 1859-1868.    
+    </li>
+    <li>
+        Zihao He, Yuer Yang, <b>Shuai Zhao✉</b>. <a>Towards Pre-trained Language Model for Dynamic Disturbance</a>[J]. <i><b>The 3rd International Academic Exchange Conference on Science and Technology Innovation (IAECST)</b></i>, 2021, 480-484.    
+    </li>
+</ol>
+        </section>
+
+        <section id="projects" class="section-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Systems</span>
+                    <h2>Projects</h2>
+                </div>
+            </div>
+
+            <div class="projects-grid">
+                <article class="project-card">
+                    <h3>📌 Project 1 — Policy QA System (RAG-based)</h3>
+                    <p>
+                        Developed a domain-specific question answering system for public policy consultation,
+                        enabling users to retrieve accurate and up-to-date policy information through natural language queries.
+                    </p>
+                    <ol>
+                        <li>Designed document ingestion pipeline for structured and unstructured policy data</li>
+                        <li>Implemented retrieval optimization (chunking, embedding tuning, reranking)</li>
+                        <li>Improved answer factuality and reduced hallucination via grounded generation</li>
+                    </ol>
+                </article>
+
+                <article class="project-card">
+                    <h3>🎓 Project 2 — University AI Assistant (NTU-GPT)</h3>
+                    <p>
+                        Designed and implemented a university-level AI assistant to support students and staff
+                        with academic, administrative, and campus-related queries.
+                    </p>
+                    <ol>
+                        <li>LLM-based responses for general queries</li>
+                        <li>RAG-based retrieval for factual / institutional knowledge</li>
+                    </ol>
+                </article>
+
+                <article class="project-card">
+                    <h3>🧑‍🏫 Project 3 — Persona-based Conversational Agent</h3>
+                    <p>
+                        Created a persona-driven chatbot that simulates the speaking style and perspectives
+                        of a historical figure for educational and interactive purposes.
+                    </p>
+                    <ol>
+                        <li>Designed prompt engineering strategy to maintain persona consistency</li>
+                        <li>Curated and structured historical texts for grounding responses</li>
+                        <li>Combined LLM generation with retrieval to ensure factual alignment</li>
+                    </ol>
+                </article>
+            </div>
+        </section>
+
+        <section id="academic-projects" class="section-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Funding</span>
+                    <h2>Academic Projects</h2>
+                </div>
+            </div>
+            <ul class="clean-list">
+                <li>
+                    Research on Anti-backdoor Attacks for Automatic Generation of Intelligent Medical Image Diagnostic Opinions (Completed)<br>
+                    Principal Investigator (PI), Jinan University Top-notch Innovative Talents Cultivation Project for Doctoral Students, 20,000 RMB.
+                </li>
+            </ul>
+        </section>
+
+        <section id="experience" class="section-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Background</span>
+                    <h2>Education and Professional Experience</h2>
+                </div>
+            </div>
+            <ul class="clean-list">
+                <li>2023.11--Now, Postdoctoral, Nanyang Technological University</li>
+                <li>2022.09–2023.09, Joint PhD Student, Nanyang Technological University</li>
+                <li>2021.09--2024.06, Ph.D, Jinan University</li>
+                <li>2018.09--2021.06, Ms.c, Beijing Institute of Graphic Communication</li>
+                <li>2014.09--2018.06, Bs.c, Anyang Institute of Technology</li>
+            </ul>
+        </section>
+
+        <section id="awards" class="section-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Recognition</span>
+                    <h2>Selected Honors and Awards</h2>
+                </div>
+            </div>
+            <ul class="clean-list">
+                <li>Awarded by the China Scholarship Council (CSC).</li>
+                <li>Excellent Master Dissertation Award of Beijing Institute of Graphic Communication</li>
+                <li>National Scholarships, Ministry of Education, China</li>
+                <li>The Second Award of the China Zhong Qing Cup Mathematical Contest In Modeling</li>
+                <li>The Third Award of the Hua Shu Cup Mathematical Contest In Modeling</li>
+            </ul>
+        </section>
+
+        <section id="service" class="section-card">
+            <div class="section-heading">
+                <div>
+                    <span class="section-kicker">Community</span>
+                    <h2>Academic Service</h2>
+                </div>
+            </div>
+            <ul class="clean-list service-list">
+                <li>
+                    Academic Editor for
+                    <a href="https://ietresearch.onlinelibrary.wiley.com/journal/ietbm">IET Biometrics</a>,
+                    Youth Editorial Board Member of CMC-Computers, Materials &amp; Continua
+                </li>
+                <li>
+                    Guest Editor for
+                    <a href="https://www.sciencedirect.com/special-issue/327042/security-and-trustworthiness-in-pattern-recognition-attacks-evaluations-and-defenses">Pattern Recognition</a>,
+                    <a href="https://www.mdpi.com/journal/electronics/special_issues/G1JPOY67HI">Electronics</a>,
+                    <a href="https://www.frontiersin.org/research-topics/69741/the-convergence-of-cognitive-neuroscience-and-artificial-intelligence-unraveling-the-mysteries-of-emotion-perception-and-human-cognition">Frontiers in Neuroscience</a>,
+                    <a href="https://www.techscience.com/cmc/special_detail/wireless_sensor_networks_energy_sustainability">Computers, Materials &amp; Continua</a>
+                </li>
+                <li>
+                    Journal Reviewer: IEEE Transactions on Emerging Topics in Computational Intelligence、Expert Systems With Applications、Transactions on Biomedical Engineering、Journal of Intelligent &amp; Fuzzy Systems、Journal of Supercomputing、IEEE access、Journal of Artificial Intelligence and Big Data、Pattern Recongnition、Engineering Applications of Artificial Intelligence、Neurocomputing、Computer Speech &amp; Language、Expert Systems、iScience、TDSC、TIFS、TAI.
+                </li>
+                <li>
+                    Conference Reviewer: ACMMM2022、ICCC2022、MWN2022、IEEE ICC 2023、ACL2023、EMNLP2023、TPC of IPMV 2024、ICLR 2025、ARR2023、ARR2024、ARR2025、ICLR2026、ARR Area Chairs.
+                </li>
+            </ul>
+        </section>
+
+        <footer class="page-footer">
+            <div class="clustrmaps-wrap">
+                <script type="text/javascript"
+                        id="clustrmaps"
+                        src="//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=n&d=TyQLrs7yW-jzbgeaBqwr_gUTrs9uRhKCXXXfuB1Vsnw&co=2d78ad&cmo=3acc3a&cmn=ff5353&ct=ffffff"></script>
+            </div>
+            <div>Last updated: <span id="last-modified"></span></div>
+            <a class="back-to-top" href="#top">Back to top ↑</a>
+        </footer>
+    </main>
+
+    <script>
+        document.getElementById("last-modified").textContent = document.lastModified;
+    </script>
+</body>
+</html>
